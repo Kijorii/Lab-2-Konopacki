@@ -1,6 +1,7 @@
 <?php
 $firma = 'Szprycha';
 $rok = date('Y');
+$imie = $_GET['imie'] ?? 'Gościu';
 
 $cennik = [
     ['nazwa' => 'Przegląd podstawowy', 'cena' => 120],
@@ -40,6 +41,8 @@ $cennik = [
     </header>
 
     <main>
+      <p>Cześć, <?= htmlspecialchars($imie) ?>!</p>
+
       <section id="uslugi">
         <h2>Nasza oferta</h2>
         <div class="cards">
@@ -100,6 +103,23 @@ $cennik = [
             <?php endforeach; ?>
           </tbody>
         </table>
+
+        <h3>Porównanie cen (wykres SVG)</h3>
+        <svg viewBox="0 0 600 <?= count($cennik) * 36 + 10 ?>" width="100%" style="max-width: 600px;" role="img" aria-labelledby="wykres-tytul">
+          <title id="wykres-tytul">Wykres cen usług</title>
+          <?php foreach ($cennik as $i => $usluga):
+              $y = $i * 36 + 10;
+              $szerokosc = $usluga['cena'];
+          ?>
+            <text x="0" y="<?= $y + 16 ?>" font-size="14" fill="#222">
+              <?= htmlspecialchars($usluga['nazwa']) ?>
+            </text>
+            <rect x="230" y="<?= $y ?>" width="<?= $szerokosc ?>" height="22" rx="4" fill="#4426FF" />
+            <text x="<?= 238 + $szerokosc ?>" y="<?= $y + 16 ?>" font-size="14" font-weight="bold" fill="#222">
+              <?= $usluga['cena'] ?> zł
+            </text>
+          <?php endforeach; ?>
+        </svg>
       </section>
     </main>
 
